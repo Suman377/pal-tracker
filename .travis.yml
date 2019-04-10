@@ -51,4 +51,4 @@ jobs:
       username: $CF_USERNAME
       password: $CF_PASSWORD
       organization: $CF_ORG
-space: $CF_SPACE
+      space: $CF_SPACE
