@@ -17,7 +17,7 @@ jobs:
       before_script:
         - mysql -uroot < databases/tracker/create_databases.sql
         - curl https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/5.1.1/flyway-commandline-5.1.1-linux-x64.tar.gz | tar xvz
-        - flyway-*/flyway -url="jdbc:mysql://localhost:3306/tracker_test" -locations=filesystem:databases/tracker -user=tracker -password= clean migrate
+        - flyway-*/flyway -url="jdbc:mysql://localhost:3306/tracker_test" -locations=filesystem:databases/tracker -user=tracker -password=  clean migrate
       script: ./gradlew clean build
       before_deploy:
         - git config --local user.name "Travis CI"
@@ -26,14 +26,14 @@ jobs:
       deploy:
         provider: releases
         api_key: $GITHUB_OAUTH_TOKEN
-        file: "build/libs/pal-tracker.jar"
+        file: "build/libs/pal-tracker.jar" cf env my-app
         skip_cleanup: true
     - stage: deploy to cf
       language: java
       before_install:
         - wget -q -O - https://packages.cloudfoundry.org/debian/cli.cloudfoundry.org.key | sudo apt-key add -
         - echo "deb https://packages.cloudfoundry.org/debian stable main" | sudo tee /etc/apt/sources.list.d/cloudfoundry-cli.list
-        - sudo apt-get update
+        - sudo apt-get updatemysql -uroot < databases/tracker/create_databases.sql
         - sudo apt-get install cf-cli
         - sudo apt-get -y install jq
         - curl https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/5.1.1/flyway-commandline-5.1.1-linux-x64.tar.gz | tar xvz
